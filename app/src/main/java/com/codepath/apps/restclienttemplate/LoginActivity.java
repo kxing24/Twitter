@@ -42,7 +42,7 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	}
 
 	// OAuth authenticated successfully, launch primary authenticated activity
-	// i.e Display application "homepage"
+	// i.e Display application "homepage" 
 	@Override
 	public void onLoginSuccess() {
 		Log.i("tag", "login success");
@@ -54,6 +54,7 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	// i.e Display an error dialog or toast
 	@Override
 	public void onLoginFailure(Exception e) {
+		Log.i("tag", "login failure");
 		e.printStackTrace();
 	}
 
