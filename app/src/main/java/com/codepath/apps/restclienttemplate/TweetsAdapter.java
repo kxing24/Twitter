@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder>{
 
@@ -56,6 +60,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         ImageView ivMedia;
         TextView tvBody;
         TextView tvScreenName;
+        TextView tvTimeAgo;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -63,15 +68,16 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             ivMedia = itemView.findViewById(R.id.ivMedia);
             tvBody = itemView.findViewById(R.id.tvBody);
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
+            tvTimeAgo = itemView.findViewById(R.id.tvTimeAgo);
         }
 
         public void bind(Tweet tweet) {
             tvBody.setText(tweet.body);
             tvScreenName.setText(tweet.user.screenName);
+            tvTimeAgo.setText(tweet.timeAgo);
             Glide.with(context).load(tweet.user.profileImageUrl).into(ivProfileImage);
-            Glide.with(context).load(tweet.mediaUrl).into(ivMedia);
-            if(tweet.mediaUrl == null) {
-                System.out.println("hi");
+            if(tweet.mediaUrl != null) {
+                Glide.with(context).load(tweet.mediaUrl).into(ivMedia);
             }
         }
     }
