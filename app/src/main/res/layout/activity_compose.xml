@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".ComposeActivity"
     app:counterEnabled="true"
-    app:counterMaxLength="140" >
+    app:counterMaxLength="280" >
 
     <EditText
         android:id="@+id/etCompose"
