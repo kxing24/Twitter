@@ -3,9 +3,6 @@ package com.codepath.apps.restclienttemplate;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Movie;
-import android.opengl.Visibility;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,13 +22,9 @@ import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
-import org.json.JSONException;
 import org.parceler.Parcels;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 
 import okhttp3.Headers;
 
@@ -78,7 +71,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         ImageView ivProfileImage;
         ImageView ivMedia;
         TextView tvBody;
-        TextView tvScreenName;
+        TextView tvName;
         TextView tvTimeAgo;
         EditText etReply;
         Button btnReply;
@@ -91,7 +84,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
             ivMedia = itemView.findViewById(R.id.ivMedia);
             tvBody = itemView.findViewById(R.id.tvBody);
-            tvScreenName = itemView.findViewById(R.id.tvScreenName);
+            tvName = itemView.findViewById(R.id.tvName);
             tvTimeAgo = itemView.findViewById(R.id.tvTimeAgo);
             etReply = itemView.findViewById(R.id.etReply);
             btnReply = itemView.findViewById(R.id.btnReply);
@@ -108,7 +101,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             setDefaultConditions();
 
             tvBody.setText(tweet.body);
-            tvScreenName.setText(tweet.user.screenName);
+            tvName.setText(tweet.user.name);
             tvTimeAgo.setText(tweet.timeAgo);
             Glide.with(context).load(tweet.user.profileImageUrl).into(ivProfileImage);
             if(tweet.mediaUrl != null) {
@@ -158,6 +151,23 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             else {
                 hideKeyboard(view);
                 setDefaultConditions();
+
+                // START NEW ACTIVITY THAT SHOWS DETAILED TWEET
+                // gets item position
+                int position = getAdapterPosition();
+
+                // make sure the position is valid, i.e. actually exists in the view
+                if (position != RecyclerView.NO_POSITION) {
+                    // get the tweet at the position
+                    Tweet tweet = tweets.get(position);
+                    // create intent for the new activity
+                    Intent intent = new Intent(context, TweetDetailsActivity.class);
+                    // serialize the movie using parceler, use its short name as a key
+                    intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
+                    // show the activity
+                    context.startActivity(intent);
+                }
+
             }
 
         }

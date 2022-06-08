@@ -22,6 +22,10 @@ public class Tweet {
     public String mediaUrl;
     public String timeAgo;
     public String id;
+    public int retweetCount;
+    public int replyCount;
+    public int likeCount;
+    public int quoteCount;
 
     // empty constructor needed by the Parceler Library
     public Tweet() {}
@@ -44,6 +48,12 @@ public class Tweet {
         }
         tweet.timeAgo = tweet.getRelativeTimeAgo(tweet.createdAt);
         tweet.id = jsonObject.getString("id");
+
+        tweet.retweetCount = jsonObject.getInt("public_metrics.retweet_count");
+        tweet.replyCount = jsonObject.getInt("public_metrics.reply_count");
+        tweet.likeCount = jsonObject.getInt("public_metrics.like_count");
+        tweet.quoteCount = jsonObject.getInt("public_metrics.quote_count");
+
         return tweet;
     }
 

@@ -42,7 +42,7 @@ public class TimelineActivity extends AppCompatActivity {
     TweetsAdapter adapter;
     MenuItem miActionProgressItem;
 
-    long lowestMaxId;
+    long lowestMaxId = Long.MAX_VALUE;
 
     Button logoutButton;
 
@@ -223,7 +223,7 @@ public class TimelineActivity extends AppCompatActivity {
                 Log.i(TAG, "onSuccess! " + json.toString());
                 JSONArray jsonArray = json.jsonArray;
                 try {
-                    lowestMaxId = getLowestId(Tweet.fromJsonArray(jsonArray));
+                    updateLowestMaxId(Tweet.fromJsonArray(jsonArray));
                     tweets.addAll(Tweet.fromJsonArray(jsonArray));
                     adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
@@ -239,13 +239,13 @@ public class TimelineActivity extends AppCompatActivity {
     }
 
     private void appendHomeTimeline() {
-        client.getHomeTimeline(lowestMaxId + 1, new JsonHttpResponseHandler() {
+        client.appendHomeTimeline(lowestMaxId - 1, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
                 Log.i(TAG, "appendHomeTimeline onSuccess! " + json.toString());
                 JSONArray jsonArray = json.jsonArray;
                 try {
-                    lowestMaxId = getLowestId(Tweet.fromJsonArray(jsonArray));
+                    updateLowestMaxId(Tweet.fromJsonArray(jsonArray));
                     tweets.addAll(Tweet.fromJsonArray(jsonArray));
                     adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
@@ -260,15 +260,13 @@ public class TimelineActivity extends AppCompatActivity {
         });
     }
 
-    private long getLowestId(List<Tweet> addedTweets) {
-        long lowestId = 0;
+    private void updateLowestMaxId(List<Tweet> addedTweets) {
         for(int i = 0; i < addedTweets.size(); i++) {
             long id = Long.valueOf(addedTweets.get(i).id);
-            if(id < lowestId) {
-                lowestId = id;
+            if (id < lowestMaxId) {
+                lowestMaxId = id;
             }
         }
-        return lowestId;
     }
 
 }
