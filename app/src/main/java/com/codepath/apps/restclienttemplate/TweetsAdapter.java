@@ -138,7 +138,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 TwitterClient client = TwitterApp.getRestClient(context);
 
                 // Make an API call to Twitter to publish the reply
-                client.publishTweet(replyContent, new JsonHttpResponseHandler() {
+                client.publishReply(replyContent, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Headers headers, JSON json) {
                         Log.i(TAG, "onSuccess to publish reply");
@@ -148,7 +148,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
                         Log.e(TAG, "onFailure to publish reply", throwable);
                     }
-                });
+                }, tweet.id);
 
                 setDefaultConditions();
             }

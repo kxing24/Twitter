@@ -21,6 +21,7 @@ public class Tweet {
     public User user;
     public String mediaUrl;
     public String timeAgo;
+    public String id;
 
     // empty constructor needed by the Parceler Library
     public Tweet() {}
@@ -42,6 +43,7 @@ public class Tweet {
             tweet.mediaUrl = null;
         }
         tweet.timeAgo = tweet.getRelativeTimeAgo(tweet.createdAt);
+        tweet.id = jsonObject.getString("id");
         return tweet;
     }
 
