@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.codepath.asynchttpclient.RequestParams;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -41,6 +42,8 @@ public class TimelineActivity extends AppCompatActivity {
     TweetsAdapter adapter;
     MenuItem miActionProgressItem;
 
+    long lowestMaxId;
+
     Button logoutButton;
 
     @Override
@@ -64,7 +67,7 @@ public class TimelineActivity extends AppCompatActivity {
         //miActionProgressItem = menu.findItem(R.id.miActionProgress);
 
         // Retain an instance so that you can call `resetState()` for fresh searches
-        scrollListener = new EndlessRecyclerViewScrollListener(new LinearLayoutManager(this)) {
+        scrollListener = new EndlessRecyclerViewScrollListener((LinearLayoutManager) rvTweets.getLayoutManager()) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 // Triggered only when new data needs to be appended to the list
@@ -117,6 +120,8 @@ public class TimelineActivity extends AppCompatActivity {
                 // add new items to adapter
                 adapter.addAll(tweets);
 
+                adapter.notifyDataSetChanged();
+
                 populateHomeTimeline();
 
                 // call setRefreshing(false) to signal refresh has finished
@@ -138,6 +143,8 @@ public class TimelineActivity extends AppCompatActivity {
         //  --> Deserialize and construct new model objects from the API response
         //  --> Append the new data objects to the existing set of items inside the array of items
         //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()`
+
+        appendHomeTimeline();
     }
 
     @Override
@@ -216,6 +223,7 @@ public class TimelineActivity extends AppCompatActivity {
                 Log.i(TAG, "onSuccess! " + json.toString());
                 JSONArray jsonArray = json.jsonArray;
                 try {
+                    lowestMaxId = getLowestId(Tweet.fromJsonArray(jsonArray));
                     tweets.addAll(Tweet.fromJsonArray(jsonArray));
                     adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
@@ -228,6 +236,39 @@ public class TimelineActivity extends AppCompatActivity {
                 Log.e(TAG, "onFailure! " + response, throwable);
             }
         });
+    }
+
+    private void appendHomeTimeline() {
+        client.getHomeTimeline(lowestMaxId - 1, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                Log.i(TAG, "appendHomeTimeline onSuccess! " + json.toString());
+                JSONArray jsonArray = json.jsonArray;
+                try {
+                    lowestMaxId = getLowestId(Tweet.fromJsonArray(jsonArray));
+                    tweets.addAll(Tweet.fromJsonArray(jsonArray));
+                    adapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    Log.e(TAG, "Json exception", e);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                Log.e(TAG, "appendHomeTimeline onFailure! " + response, throwable);
+            }
+        });
+    }
+
+    private long getLowestId(List<Tweet> addedTweets) {
+        long lowestId = 0;
+        for(int i = 0; i < addedTweets.size(); i++) {
+            long id = Long.valueOf(addedTweets.get(i).id);
+            if(id < lowestId) {
+                lowestId = id;
+            }
+        }
+        return lowestId;
     }
 
 }
