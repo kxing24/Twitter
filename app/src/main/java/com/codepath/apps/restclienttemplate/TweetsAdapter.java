@@ -109,8 +109,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvBody.setText(tweet.body);
             tvScreenName.setText(tweet.user.screenName);
             tvTimeAgo.setText(tweet.timeAgo);
-            etReply.setText("@" + tweet.user.screenName + " ");
-            etReply.setSelection(etReply.getText().length());
             Glide.with(context).load(tweet.user.profileImageUrl).into(ivProfileImage);
             if(tweet.mediaUrl != null) {
                 Glide.with(context).load(tweet.mediaUrl).into(ivMedia);
@@ -161,6 +159,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
         public void setDefaultConditions() {
             etReply.setText("@" + tweet.user.screenName + " ");
+            etReply.setSelection(etReply.getText().length());
             etReply.setVisibility(View.GONE);
             ibSend.setVisibility(View.GONE);
             btnReply.setVisibility(View.VISIBLE);
