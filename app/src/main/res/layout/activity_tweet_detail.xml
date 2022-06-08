@@ -7,23 +7,13 @@
     tools:context=".TweetDetailsActivity">
 
     <TextView
-        android:id="@+id/tvQuoteCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvCreatedAt"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="5dp"
-        android:layout_toEndOf="@+id/tvRetweetCount"
-        tools:text="2 Quote Tweets" />
-
-    <TextView
         android:id="@+id/tvLikeCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvCreatedAt"
         android:layout_marginStart="30dp"
         android:layout_marginTop="5dp"
-        android:layout_toEndOf="@+id/tvQuoteCount"
+        android:layout_toEndOf="@+id/tvRetweetCount"
         tools:text="83 Likes" />
 
     <ImageView

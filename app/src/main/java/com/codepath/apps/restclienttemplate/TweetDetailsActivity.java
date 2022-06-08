@@ -24,7 +24,6 @@ public class TweetDetailsActivity extends AppCompatActivity {
     TextView tvCreatedAt;
 
     TextView tvRetweetCount;
-    TextView tvQuoteCount;
     TextView tvLikeCount;
 
     @Override
@@ -40,12 +39,8 @@ public class TweetDetailsActivity extends AppCompatActivity {
         tvBody = findViewById(R.id.tvBody);
         tvCreatedAt = findViewById(R.id.tvCreatedAt);
 
-        /*
         tvRetweetCount = findViewById(R.id.tvRetweetCount);
-        tvQuoteCount = findViewById(R.id.tvQuoteCount);
         tvLikeCount = findViewById(R.id.tvLikeCount);
-
-         */
 
         // unwrap the tweet passed in via intent, using its simple name as a key
         tweet = (Tweet) Parcels.unwrap(getIntent().getParcelableExtra(Tweet.class.getSimpleName()));
@@ -55,12 +50,8 @@ public class TweetDetailsActivity extends AppCompatActivity {
         tvBody.setText(tweet.body);
         tvCreatedAt.setText(tweet.createdAt);
 
-        /*
-
         tvRetweetCount.setText(tweet.retweetCount + " Retweets");
-        tvQuoteCount.setText(tweet.quoteCount + " Quote Tweets");
-
-         */
+        tvLikeCount.setText(tweet.likeCount + " Likes");
 
         if(tweet.mediaUrl != null) {
             Glide.with(this).load(tweet.mediaUrl).into(ivMedia);
