@@ -121,47 +121,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
         @Override
         public void onClick(View view) {
-            switch (TweetsAdapterViews.valueOf(view.toString())) {
-                case btnReply:
-                    etReply.setVisibility(View.VISIBLE);
-                    ibSend.setVisibility(View.VISIBLE);
-                    btnReply.setVisibility(View.GONE);
-                    break;
-                case ibSend:
-                    String replyContent = etReply.getText().toString();
-                    if(replyContent.isEmpty()) {
-                        Toast.makeText(context, "Sorry, your reply cannot be empty", Toast.LENGTH_LONG).show();
-                        return;
-                    }
-                    if(replyContent.length() > MAX_TWEET_LENGTH) {
-                        Toast.makeText(context, "Sorry, your reply is too long", Toast.LENGTH_LONG).show();
-                        return;
-                    }
-
-                    TwitterClient client = TwitterApp.getRestClient(context);
-
-                    // Make an API call to Twitter to publish the reply
-                    client.publishReply(replyContent, new JsonHttpResponseHandler() {
-                        @Override
-                        public void onSuccess(int statusCode, Headers headers, JSON json) {
-                            Log.i(TAG, "onSuccess to publish reply");
-                        }
-
-                        @Override
-                        public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                            Log.e(TAG, "onFailure to publish reply", throwable);
-                        }
-                    }, tweet.id);
-
-                    hideKeyboard(view);
-                    setDefaultConditions();
-
-                    break;
-                default:
-                    hideKeyboard(view);
-                    setDefaultConditions();
-            }
-            /*
             if(view == btnReply) {
                 etReply.setVisibility(View.VISIBLE);
                 ibSend.setVisibility(View.VISIBLE);
@@ -201,7 +160,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 setDefaultConditions();
             }
 
-             */
         }
 
         public void setDefaultConditions() {
