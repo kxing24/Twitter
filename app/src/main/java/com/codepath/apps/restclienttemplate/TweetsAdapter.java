@@ -150,13 +150,11 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     }
                 }, tweet.id);
 
+                hideKeyboard(view);
                 setDefaultConditions();
             }
             else {
-                // hide the keyboard
-                InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-
+                hideKeyboard(view);
                 setDefaultConditions();
             }
         }
@@ -166,6 +164,11 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             etReply.setVisibility(View.GONE);
             ibSend.setVisibility(View.GONE);
             btnReply.setVisibility(View.VISIBLE);
+        }
+
+        public void hideKeyboard(View view) {
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
