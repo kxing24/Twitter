@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Movie;
+import android.opengl.Visibility;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -113,10 +114,54 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             if(tweet.mediaUrl != null) {
                 Glide.with(context).load(tweet.mediaUrl).into(ivMedia);
             }
+            else {
+                ivMedia.setVisibility(View.GONE);
+            }
         }
 
         @Override
         public void onClick(View view) {
+            switch (TweetsAdapterViews.valueOf(view.toString())) {
+                case btnReply:
+                    etReply.setVisibility(View.VISIBLE);
+                    ibSend.setVisibility(View.VISIBLE);
+                    btnReply.setVisibility(View.GONE);
+                    break;
+                case ibSend:
+                    String replyContent = etReply.getText().toString();
+                    if(replyContent.isEmpty()) {
+                        Toast.makeText(context, "Sorry, your reply cannot be empty", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    if(replyContent.length() > MAX_TWEET_LENGTH) {
+                        Toast.makeText(context, "Sorry, your reply is too long", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
+                    TwitterClient client = TwitterApp.getRestClient(context);
+
+                    // Make an API call to Twitter to publish the reply
+                    client.publishReply(replyContent, new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Headers headers, JSON json) {
+                            Log.i(TAG, "onSuccess to publish reply");
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                            Log.e(TAG, "onFailure to publish reply", throwable);
+                        }
+                    }, tweet.id);
+
+                    hideKeyboard(view);
+                    setDefaultConditions();
+
+                    break;
+                default:
+                    hideKeyboard(view);
+                    setDefaultConditions();
+            }
+            /*
             if(view == btnReply) {
                 etReply.setVisibility(View.VISIBLE);
                 ibSend.setVisibility(View.VISIBLE);
@@ -155,6 +200,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 hideKeyboard(view);
                 setDefaultConditions();
             }
+
+             */
         }
 
         public void setDefaultConditions() {

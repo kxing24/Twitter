@@ -239,7 +239,7 @@ public class TimelineActivity extends AppCompatActivity {
     }
 
     private void appendHomeTimeline() {
-        client.getHomeTimeline(lowestMaxId - 1, new JsonHttpResponseHandler() {
+        client.getHomeTimeline(lowestMaxId + 1, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
                 Log.i(TAG, "appendHomeTimeline onSuccess! " + json.toString());
