@@ -38,6 +38,9 @@ public class Tweet {
         if(jsonObject.has("extended_entities")) {
             tweet.mediaUrl = jsonObject.getJSONObject("extended_entities").getJSONArray("media").getJSONObject(0).getString("media_url");
         }
+        else {
+            tweet.mediaUrl = null;
+        }
         tweet.timeAgo = tweet.getRelativeTimeAgo(tweet.createdAt);
         return tweet;
     }
