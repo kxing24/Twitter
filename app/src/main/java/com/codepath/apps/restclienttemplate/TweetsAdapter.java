@@ -79,6 +79,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         ImageButton ibReply;
         ImageButton ibLikeEmpty;
         ImageButton ibLike;
+        TextView tvLikeCount;
 
         Tweet tweet;
 
@@ -93,14 +94,13 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             ibReply = itemView.findViewById(R.id.ibReply);
             ibLikeEmpty = itemView.findViewById(R.id.ibLikeEmpty);
             ibLike = itemView.findViewById(R.id.ibLike);
+            tvLikeCount = itemView.findViewById(R.id.tvLikeCount);
 
             ibReply.setOnClickListener(this);
             itemView.setOnClickListener(this);
             ibLikeEmpty.setOnClickListener(this);
             ibLike.setOnClickListener(this);
 
-            // HELP: how to check if the tweet is currently liked by the user?
-            ibLike.setVisibility(View.GONE);
         }
 
         public void bind(Tweet tweet) {
@@ -108,10 +108,20 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
             int radius = 50;
 
+            if(tweet.favorited) {
+                ibLike.setVisibility(View.VISIBLE);
+                ibLikeEmpty.setVisibility(View.GONE);
+            }
+            else {
+                ibLike.setVisibility(View.GONE);
+                ibLikeEmpty.setVisibility(View.VISIBLE);
+            }
+
             tvBody.setText(tweet.body);
             tvName.setText(tweet.user.name);
             tvScreenName.setText("Replying to @" + tweet.user.screenName);
             tvTimeAgo.setText(tweet.timeAgo);
+            tvLikeCount.setText(Integer.toString(tweet.likeCount));
             Glide.with(context).load(tweet.user.profileImageUrl).circleCrop().into(ivProfileImage);
             if(tweet.mediaUrl != null) {
                 Glide.with(context).load(tweet.mediaUrl).transform(new RoundedCorners(radius)).into(ivMedia);
@@ -144,6 +154,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 }, tweet.id);
                 ibLikeEmpty.setVisibility(View.GONE);
                 ibLike.setVisibility(View.VISIBLE);
+                tweet.likeCount++;
+                tvLikeCount.setText(Integer.toString(tweet.likeCount));
             }
             else if(view == ibLike) {
                 client.unlikeTweet(new JsonHttpResponseHandler() {
@@ -159,6 +171,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 }, tweet.id);
                 ibLike.setVisibility(View.GONE);
                 ibLikeEmpty.setVisibility(View.VISIBLE);
+                tweet.likeCount--;
+                tvLikeCount.setText(Integer.toString(tweet.likeCount));
             }
             else {
                 // START NEW ACTIVITY THAT SHOWS DETAILED TWEET

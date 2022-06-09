@@ -16,6 +16,7 @@
         android:usesCleartextTraffic="true" >
         <activity
             android:name=".ReplyActivity"
+            android:theme="@style/Theme.AppCompat.Dialog"
             android:exported="false" />
         <activity
             android:name=".TweetDetailsActivity"

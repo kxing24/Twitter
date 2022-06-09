@@ -47,6 +47,7 @@ public class ReplyActivity extends AppCompatActivity {
 
         tvOriginalAuthor.setText("Replying to @" + originalAuthor);
         etReply.setText("@" + originalAuthor + " ");
+        etReply.setSelection(etReply.length());
 
         // Set click listener on button
         btnTweet.setOnClickListener(new View.OnClickListener() {
@@ -61,7 +62,6 @@ public class ReplyActivity extends AppCompatActivity {
                     Toast.makeText(ReplyActivity.this, "Sorry, your tweet is too long", Toast.LENGTH_LONG).show();
                     return;
                 }
-                //Toast.makeText(ComposeActivity.this, tweetContent, Toast.LENGTH_LONG).show();
 
                 // Make an API call to Twitter to publish the tweet
                 client.publishTweet(tweetContent, new JsonHttpResponseHandler() {

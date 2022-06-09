@@ -61,9 +61,17 @@ public class TweetDetailsActivity extends AppCompatActivity {
         ibLikeEmpty = findViewById(R.id.ibLikeEmpty);
         ibLike = findViewById(R.id.ibLike);
 
-        // HELP: how to check if the tweet is currently liked by the user?
+        // unwrap the tweet passed in via intent, using its simple name as a key
+        tweet = (Tweet) Parcels.unwrap(getIntent().getParcelableExtra(Tweet.class.getSimpleName()));
 
-        ibLike.setVisibility(View.GONE);
+        if(tweet.favorited) {
+            ibLike.setVisibility(View.VISIBLE);
+            ibLikeEmpty.setVisibility(View.GONE);
+        }
+        else {
+            ibLike.setVisibility(View.GONE);
+            ibLikeEmpty.setVisibility(View.VISIBLE);
+        }
 
         btnReply.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,6 +98,10 @@ public class TweetDetailsActivity extends AppCompatActivity {
                 }, tweet.id);
                 ibLikeEmpty.setVisibility(View.GONE);
                 ibLike.setVisibility(View.VISIBLE);
+
+                tweet.likeCount++;
+                tvLikeCount.setText(tweet.likeCount + " Likes");
+
             }
         });
         ibLike.setOnClickListener(new View.OnClickListener() {
@@ -108,11 +120,11 @@ public class TweetDetailsActivity extends AppCompatActivity {
                 }, tweet.id);
                 ibLike.setVisibility(View.GONE);
                 ibLikeEmpty.setVisibility(View.VISIBLE);
+
+                tweet.likeCount--;
+                tvLikeCount.setText(tweet.likeCount + " Likes");
             }
         });
-
-        // unwrap the tweet passed in via intent, using its simple name as a key
-        tweet = (Tweet) Parcels.unwrap(getIntent().getParcelableExtra(Tweet.class.getSimpleName()));
 
         tvScreenName.setText("@" + tweet.user.screenName);
         tvName.setText(tweet.user.name);
