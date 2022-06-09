@@ -136,7 +136,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
             tvBody.setText(tweet.body);
             tvName.setText(tweet.user.name);
-            tvScreenName.setText("Replying to @" + tweet.user.screenName);
+            tvScreenName.setText("@" + tweet.user.screenName);
             tvTimeAgo.setText(tweet.timeAgo);
             tvLikeCount.setText(Integer.toString(tweet.likeCount));
             tvRetweetCount.setText(Integer.toString(tweet.retweetCount));

@@ -18,6 +18,7 @@ import java.util.Locale;
 public class Tweet {
     public String body;
     public String createdAt;
+    public String createdAtFormatted;
     public User user;
     public String mediaUrl;
     public String timeAgo;
@@ -39,6 +40,7 @@ public class Tweet {
             tweet.body = jsonObject.getString("text");
         }
         tweet.createdAt = jsonObject.getString("created_at");
+        tweet.createdAtFormatted = tweet.getCreatedAt(tweet.createdAt);
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
         if(jsonObject.has("extended_entities")) {
             tweet.mediaUrl = jsonObject.getJSONObject("extended_entities").getJSONArray("media").getJSONObject(0).getString("media_url");
@@ -81,5 +83,20 @@ public class Tweet {
         }
 
         return relativeDate;
+    }
+
+    public String getCreatedAt(String rawJsonDate) {
+        String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
+        SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
+        sf.setLenient(true);
+
+        String createdAt = "";
+        try {
+            createdAt = sf.parse(rawJsonDate).toString();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return createdAt;
     }
 }

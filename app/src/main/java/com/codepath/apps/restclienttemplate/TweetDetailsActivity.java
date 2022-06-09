@@ -185,7 +185,8 @@ public class TweetDetailsActivity extends AppCompatActivity {
         tvScreenName.setText("@" + tweet.user.screenName);
         tvName.setText(tweet.user.name);
         tvBody.setText(tweet.body);
-        tvCreatedAt.setText(tweet.createdAt);
+        //tvCreatedAt.setText(tweet.createdAt);
+        tvCreatedAt.setText(tweet.createdAtFormatted);
 
         tvRetweetCount.setText(tweet.retweetCount + " Retweets");
         tvLikeCount.setText(tweet.likeCount + " Likes");
