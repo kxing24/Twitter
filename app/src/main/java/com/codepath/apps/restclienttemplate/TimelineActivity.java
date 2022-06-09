@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -45,6 +46,7 @@ public class TimelineActivity extends AppCompatActivity {
     long lowestMaxId = Long.MAX_VALUE;
 
     Button logoutButton;
+    ImageButton ibTop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +88,15 @@ public class TimelineActivity extends AppCompatActivity {
                 showProgressBar();
                 onLogoutButton();
                 hideProgressBar();
+            }
+        });
+
+        ibTop = findViewById(R.id.ibTop);
+
+        ibTop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onIbTop();
             }
         });
 
@@ -214,6 +225,10 @@ public class TimelineActivity extends AppCompatActivity {
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // this makes sure the Back button won't work
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // same as above
         startActivity(i);
+    }
+
+    void onIbTop() {
+        rvTweets.smoothScrollToPosition(0);
     }
 
     private void populateHomeTimeline() {

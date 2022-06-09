@@ -29,4 +29,14 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:text="Logout" />
+
+    <ImageButton
+        android:id="@+id/ibTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/transparent"
+        app:srcCompat="@drawable/twitter" />
 </RelativeLayout>
