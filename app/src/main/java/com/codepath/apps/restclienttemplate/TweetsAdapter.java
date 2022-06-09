@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
@@ -72,6 +73,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         ImageView ivMedia;
         TextView tvBody;
         TextView tvName;
+        TextView tvScreenName;
         TextView tvTimeAgo;
         EditText etReply;
         Button btnReply;
@@ -85,6 +87,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             ivMedia = itemView.findViewById(R.id.ivMedia);
             tvBody = itemView.findViewById(R.id.tvBody);
             tvName = itemView.findViewById(R.id.tvName);
+            tvScreenName = itemView.findViewById(R.id.tvScreenName);
             tvTimeAgo = itemView.findViewById(R.id.tvTimeAgo);
             etReply = itemView.findViewById(R.id.etReply);
             btnReply = itemView.findViewById(R.id.btnReply);
@@ -98,14 +101,17 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         public void bind(Tweet tweet) {
             this.tweet = tweet;
 
+            int radius = 100;
+
             setDefaultConditions();
 
             tvBody.setText(tweet.body);
             tvName.setText(tweet.user.name);
+            tvScreenName.setText("@" + tweet.user.screenName);
             tvTimeAgo.setText(tweet.timeAgo);
-            Glide.with(context).load(tweet.user.profileImageUrl).into(ivProfileImage);
+            Glide.with(context).load(tweet.user.profileImageUrl).circleCrop().into(ivProfileImage);
             if(tweet.mediaUrl != null) {
-                Glide.with(context).load(tweet.mediaUrl).into(ivMedia);
+                Glide.with(context).load(tweet.mediaUrl).transform(new RoundedCorners(radius)).into(ivMedia);
             }
             else {
                 ivMedia.setVisibility(View.GONE);
