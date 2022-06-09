@@ -45,8 +45,6 @@ public class TimelineActivity extends AppCompatActivity {
 
     long lowestMaxId = Long.MAX_VALUE;
 
-    ImageButton ibTop;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,8 +63,6 @@ public class TimelineActivity extends AppCompatActivity {
         rvTweets.setLayoutManager(new LinearLayoutManager(this));
         rvTweets.setAdapter(adapter);
 
-        //miActionProgressItem = menu.findItem(R.id.miActionProgress);
-
         // Retain an instance so that you can call `resetState()` for fresh searches
         scrollListener = new EndlessRecyclerViewScrollListener((LinearLayoutManager) rvTweets.getLayoutManager()) {
             @Override
@@ -78,15 +74,6 @@ public class TimelineActivity extends AppCompatActivity {
         };
         // Adds the scroll listener to RecyclerView
         rvTweets.addOnScrollListener(scrollListener);
-
-        ibTop = findViewById(R.id.ibTop);
-
-        ibTop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onIbTop();
-            }
-        });
 
         // Lookup the swipe container view
         swipeContainer = findViewById(R.id.swipeContainer);
@@ -187,6 +174,7 @@ public class TimelineActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    /*
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // Store instance of the menu item containing progress
@@ -205,6 +193,7 @@ public class TimelineActivity extends AppCompatActivity {
         // Hide progress item
         miActionProgressItem.setVisible(false);
     }
+     */
 
     void onLogout() {
         finish();
