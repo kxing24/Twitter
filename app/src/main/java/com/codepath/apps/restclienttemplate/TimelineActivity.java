@@ -45,7 +45,6 @@ public class TimelineActivity extends AppCompatActivity {
 
     long lowestMaxId = Long.MAX_VALUE;
 
-    Button logoutButton;
     ImageButton ibTop;
 
     @Override
@@ -79,17 +78,6 @@ public class TimelineActivity extends AppCompatActivity {
         };
         // Adds the scroll listener to RecyclerView
         rvTweets.addOnScrollListener(scrollListener);
-
-        logoutButton = findViewById(R.id.logoutButton);
-
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showProgressBar();
-                onLogoutButton();
-                hideProgressBar();
-            }
-        });
 
         ibTop = findViewById(R.id.ibTop);
 
@@ -175,6 +163,10 @@ public class TimelineActivity extends AppCompatActivity {
 
             return true;
         }
+        if (item.getItemId() == R.id.logout) {
+            // Logout button has been selected
+            onLogout();
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -214,7 +206,7 @@ public class TimelineActivity extends AppCompatActivity {
         miActionProgressItem.setVisible(false);
     }
 
-    void onLogoutButton() {
+    void onLogout() {
         finish();
 
         // forget who's logged in
