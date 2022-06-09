@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
@@ -115,14 +116,16 @@ public class TweetDetailsActivity extends AppCompatActivity {
         tvRetweetCount.setText(tweet.retweetCount + " Retweets");
         tvLikeCount.setText(tweet.likeCount + " Likes");
 
+        int radius = 50;
+
         if(tweet.mediaUrl != null) {
-            Glide.with(this).load(tweet.mediaUrl).into(ivMedia);
+            Glide.with(this).load(tweet.mediaUrl).transform(new RoundedCorners(radius)).into(ivMedia);
         }
         else {
             ivMedia.setVisibility(View.GONE);
         }
 
-        Glide.with(this).load(tweet.user.profileImageUrl).into(ivProfileImage);
+        Glide.with(this).load(tweet.user.profileImageUrl).circleCrop().into(ivProfileImage);
 
     }
 

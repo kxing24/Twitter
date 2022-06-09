@@ -154,6 +154,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_toEndOf="@+id/ivProfileImage"
+        android:textStyle="bold"
         tools:text="kathyxing02" />
 
     <ImageView
@@ -172,8 +173,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvName"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="10dp"
         android:layout_toEndOf="@+id/ivProfileImage"
+        android:textColor="@color/medium_gray"
         tools:text="/@kathyxing02" />
 
     <TextView
@@ -184,6 +185,7 @@
         android:layout_alignParentStart="true"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
+        android:adjustViewBounds="true"
         tools:text="Jun 8, 2022" />
 
     <TextView

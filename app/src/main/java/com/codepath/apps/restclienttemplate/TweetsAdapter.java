@@ -101,13 +101,13 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         public void bind(Tweet tweet) {
             this.tweet = tweet;
 
-            int radius = 100;
+            int radius = 50;
 
             setDefaultConditions();
 
             tvBody.setText(tweet.body);
             tvName.setText(tweet.user.name);
-            tvScreenName.setText("@" + tweet.user.screenName);
+            tvScreenName.setText("Replying to @" + tweet.user.screenName);
             tvTimeAgo.setText(tweet.timeAgo);
             Glide.with(context).load(tweet.user.profileImageUrl).circleCrop().into(ivProfileImage);
             if(tweet.mediaUrl != null) {
