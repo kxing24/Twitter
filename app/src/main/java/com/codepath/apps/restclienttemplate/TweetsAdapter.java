@@ -32,6 +32,8 @@ import okhttp3.Headers;
 
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder>{
 
+    private final int REQUEST_CODE = 20;
+
     public static final String TAG = "TweetsAdapter";
     public static final int MAX_TWEET_LENGTH = 280;
     Context context;
@@ -156,7 +158,9 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 // start reply activity
                 Intent intent = new Intent(context, ReplyActivity.class);
                 intent.putExtra("original_author", tweet.user.screenName);
-                context.startActivity(intent);
+                ((TimelineActivity) context).startActivityForResult(intent, REQUEST_CODE);
+
+                //context.startActivity(intent);
             }
             else if(view == ibLikeEmpty) {
                 client.likeTweet(new JsonHttpResponseHandler() {
