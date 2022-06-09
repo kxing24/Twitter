@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +27,7 @@ public class ReplyActivity extends AppCompatActivity {
     public static final int MAX_TWEET_LENGTH = 280;
 
     TextView tvOriginalAuthor;
+    TextView tvCharacterCounter;
     EditText etReply;
     Button btnTweet;
     String originalAuthor;
@@ -39,6 +42,7 @@ public class ReplyActivity extends AppCompatActivity {
         client = TwitterApp.getRestClient(this);
 
         tvOriginalAuthor = findViewById(R.id.tvOriginalAuthor);
+        tvCharacterCounter = findViewById(R.id.tvCharacterCounter);
         etReply = findViewById(R.id.etReply);
         btnTweet = findViewById(R.id.btnTweet);
 
@@ -48,6 +52,20 @@ public class ReplyActivity extends AppCompatActivity {
         tvOriginalAuthor.setText("Replying to @" + originalAuthor);
         etReply.setText("@" + originalAuthor + " ");
         etReply.setSelection(etReply.length());
+
+        TextWatcher twCompose = new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //This sets a textview to the current length
+                tvCharacterCounter.setText(String.valueOf(s.length()) + "/280");
+            }
+
+            public void afterTextChanged(Editable s) {
+            }
+        };
+        etReply.addTextChangedListener(twCompose);
 
         // Set click listener on button
         btnTweet.setOnClickListener(new View.OnClickListener() {

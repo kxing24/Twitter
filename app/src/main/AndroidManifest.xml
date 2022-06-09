@@ -16,13 +16,14 @@
         android:usesCleartextTraffic="true" >
         <activity
             android:name=".ReplyActivity"
-            android:theme="@style/Theme.AppCompat.Dialog"
+            android:theme="@style/Theme.AppCompat.DayNight.Dialog"
             android:exported="false" />
         <activity
             android:name=".TweetDetailsActivity"
             android:exported="false" />
         <activity
             android:name=".ComposeActivity"
+            android:theme="@style/Theme.AppCompat.DayNight.Dialog"
             android:exported="false" />
         <activity
             android:name=".TimelineActivity"

@@ -52,7 +52,12 @@ public class Tweet {
         tweet.id = jsonObject.getString("id");
 
         tweet.retweetCount = jsonObject.getInt("retweet_count");
-        tweet.likeCount = jsonObject.getInt("favorite_count");
+        if(jsonObject.has("retweeted_status")) {
+            tweet.likeCount = jsonObject.getJSONObject("retweeted_status").getInt("favorite_count");
+        }
+        else {
+            tweet.likeCount = jsonObject.getInt("favorite_count");
+        }
 
         tweet.favorited = jsonObject.getBoolean("favorited");
         tweet.retweeted = jsonObject.getBoolean("retweeted");
