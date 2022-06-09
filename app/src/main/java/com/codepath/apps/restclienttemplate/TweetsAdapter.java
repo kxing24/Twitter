@@ -80,6 +80,9 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         ImageButton ibLikeEmpty;
         ImageButton ibLike;
         TextView tvLikeCount;
+        ImageButton ibRetweet;
+        ImageButton ibRetweetEmpty;
+        TextView tvRetweetCount;
 
         Tweet tweet;
 
@@ -95,11 +98,16 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             ibLikeEmpty = itemView.findViewById(R.id.ibLikeEmpty);
             ibLike = itemView.findViewById(R.id.ibLike);
             tvLikeCount = itemView.findViewById(R.id.tvLikeCount);
+            ibRetweetEmpty = itemView.findViewById(R.id.ibRetweetEmpty);
+            ibRetweet = itemView.findViewById(R.id.ibRetweet);
+            tvRetweetCount = itemView.findViewById(R.id.tvRetweetCount);
 
             ibReply.setOnClickListener(this);
             itemView.setOnClickListener(this);
             ibLikeEmpty.setOnClickListener(this);
             ibLike.setOnClickListener(this);
+            ibRetweetEmpty.setOnClickListener(this);
+            ibRetweet.setOnClickListener(this);
 
         }
 
@@ -117,11 +125,21 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 ibLikeEmpty.setVisibility(View.VISIBLE);
             }
 
+            if(tweet.retweeted) {
+                ibRetweet.setVisibility(View.VISIBLE);
+                ibRetweetEmpty.setVisibility(View.GONE);
+            }
+            else {
+                ibRetweet.setVisibility(View.GONE);
+                ibRetweetEmpty.setVisibility(View.VISIBLE);
+            }
+
             tvBody.setText(tweet.body);
             tvName.setText(tweet.user.name);
             tvScreenName.setText("Replying to @" + tweet.user.screenName);
             tvTimeAgo.setText(tweet.timeAgo);
             tvLikeCount.setText(Integer.toString(tweet.likeCount));
+            tvRetweetCount.setText(Integer.toString(tweet.retweetCount));
             Glide.with(context).load(tweet.user.profileImageUrl).circleCrop().into(ivProfileImage);
             if(tweet.mediaUrl != null) {
                 Glide.with(context).load(tweet.mediaUrl).transform(new RoundedCorners(radius)).into(ivMedia);
@@ -173,6 +191,40 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 ibLikeEmpty.setVisibility(View.VISIBLE);
                 tweet.likeCount--;
                 tvLikeCount.setText(Integer.toString(tweet.likeCount));
+            }
+            else if(view == ibRetweetEmpty) {
+                client.retweetTweet(new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Headers headers, JSON json) {
+                        Log.i("DEBUG", "Retweeted tweet");
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                        Log.d("DEBUG", "Retweet tweet error: " + throwable.toString());
+                    }
+                }, tweet.id);
+                ibRetweetEmpty.setVisibility(View.GONE);
+                ibRetweet.setVisibility(View.VISIBLE);
+                tweet.retweetCount++;
+                tvRetweetCount.setText(Integer.toString(tweet.retweetCount));
+            }
+            else if(view == ibRetweet) {
+                client.unretweetTweet(new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Headers headers, JSON json) {
+                        Log.i("DEBUG", "Unretweeted tweet");
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                        Log.d("DEBUG", "Unretweet tweet error: " + throwable.toString());
+                    }
+                }, tweet.id);
+                ibRetweet.setVisibility(View.GONE);
+                ibRetweetEmpty.setVisibility(View.VISIBLE);
+                tweet.retweetCount--;
+                tvRetweetCount.setText(Integer.toString(tweet.retweetCount));
             }
             else {
                 // START NEW ACTIVITY THAT SHOWS DETAILED TWEET

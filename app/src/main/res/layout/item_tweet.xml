@@ -86,7 +86,7 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_below="@id/ivMedia"
-        android:layout_marginStart="100dp"
+        android:layout_marginStart="120dp"
         android:layout_marginTop="10dp"
         android:layout_toEndOf="@+id/ibReply"
         android:background="@android:color/transparent"
@@ -98,12 +98,36 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_below="@id/ivMedia"
-        android:layout_marginStart="100dp"
+        android:layout_marginStart="120dp"
         android:layout_marginTop="10dp"
         android:layout_toEndOf="@+id/ibReply"
         android:background="@android:color/transparent"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_vector_heart" />
+
+    <ImageButton
+        android:id="@+id/ibRetweetEmpty"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/ivMedia"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@+id/ibReply"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/ic_vector_retweet_stroke" />
+
+    <ImageButton
+        android:id="@+id/ibRetweet"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/ivMedia"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@+id/ibReply"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/ic_vector_retweet" />
 
     <TextView
         android:id="@+id/tvLikeCount"
@@ -111,9 +135,20 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/ivMedia"
         android:layout_alignParentLeft="false"
-        android:layout_marginStart="123dp"
+        android:layout_marginStart="143dp"
         android:layout_marginTop="10dp"
         android:layout_toEndOf="@+id/ibReply"
         tools:text="83" />
+
+    <TextView
+        android:id="@+id/tvRetweetCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivMedia"
+        android:layout_alignParentLeft="false"
+        android:layout_marginStart="73dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@+id/ibReply"
+        tools:text="42" />
 
 </RelativeLayout>

@@ -37,6 +37,8 @@ public class TweetDetailsActivity extends AppCompatActivity {
     ImageButton btnReply;
     ImageButton ibLikeEmpty;
     ImageButton ibLike;
+    ImageButton ibRetweetEmpty;
+    ImageButton ibRetweet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,8 @@ public class TweetDetailsActivity extends AppCompatActivity {
         btnReply = findViewById(R.id.btnReply);
         ibLikeEmpty = findViewById(R.id.ibLikeEmpty);
         ibLike = findViewById(R.id.ibLike);
+        ibRetweetEmpty = findViewById(R.id.ibRetweetEmpty);
+        ibRetweet = findViewById(R.id.ibRetweet);
 
         // unwrap the tweet passed in via intent, using its simple name as a key
         tweet = (Tweet) Parcels.unwrap(getIntent().getParcelableExtra(Tweet.class.getSimpleName()));
@@ -71,6 +75,15 @@ public class TweetDetailsActivity extends AppCompatActivity {
         else {
             ibLike.setVisibility(View.GONE);
             ibLikeEmpty.setVisibility(View.VISIBLE);
+        }
+
+        if(tweet.retweeted) {
+            ibRetweet.setVisibility(View.VISIBLE);
+            ibRetweetEmpty.setVisibility(View.GONE);
+        }
+        else {
+            ibRetweet.setVisibility(View.GONE);
+            ibRetweetEmpty.setVisibility(View.VISIBLE);
         }
 
         btnReply.setOnClickListener(new View.OnClickListener() {
@@ -123,6 +136,49 @@ public class TweetDetailsActivity extends AppCompatActivity {
 
                 tweet.likeCount--;
                 tvLikeCount.setText(tweet.likeCount + " Likes");
+            }
+        });
+        ibRetweetEmpty.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                client.retweetTweet(new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Headers headers, JSON json) {
+                        Log.i("DEBUG", "Retweeted tweet");
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                        Log.d("DEBUG", "Retweet tweet error: " + throwable.toString());
+                    }
+                }, tweet.id);
+                ibRetweetEmpty.setVisibility(View.GONE);
+                ibRetweet.setVisibility(View.VISIBLE);
+
+                tweet.retweetCount++;
+                tvRetweetCount.setText(tweet.retweetCount + " Retweets");
+
+            }
+        });
+        ibRetweet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                client.unretweetTweet(new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Headers headers, JSON json) {
+                        Log.i("DEBUG", "Unretweeted tweet");
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                        Log.d("DEBUG", "Unretweet tweet error: " + throwable.toString());
+                    }
+                }, tweet.id);
+                ibRetweet.setVisibility(View.GONE);
+                ibRetweetEmpty.setVisibility(View.VISIBLE);
+
+                tweet.retweetCount--;
+                tvRetweetCount.setText(tweet.retweetCount + " Retweets");
             }
         });
 
