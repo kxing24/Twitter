@@ -77,6 +77,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvScreenName;
         TextView tvTimeAgo;
         ImageButton ibReply;
+        ImageButton ibLikeEmpty;
+        ImageButton ibLike;
 
         Tweet tweet;
 
@@ -89,9 +91,16 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             tvTimeAgo = itemView.findViewById(R.id.tvTimeAgo);
             ibReply = itemView.findViewById(R.id.ibReply);
+            ibLikeEmpty = itemView.findViewById(R.id.ibLikeEmpty);
+            ibLike = itemView.findViewById(R.id.ibLike);
 
             ibReply.setOnClickListener(this);
             itemView.setOnClickListener(this);
+            ibLikeEmpty.setOnClickListener(this);
+            ibLike.setOnClickListener(this);
+
+            // HELP: how to check if the tweet is currently liked by the user?
+            ibLike.setVisibility(View.GONE);
         }
 
         public void bind(Tweet tweet) {
@@ -114,44 +123,43 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
         @Override
         public void onClick(View view) {
+            TwitterClient client = TwitterApp.getRestClient(context);
             if(view == ibReply) {
-
+                // start reply activity
                 Intent intent = new Intent(context, ReplyActivity.class);
                 intent.putExtra("original_author", tweet.user.screenName);
                 context.startActivity(intent);
             }
-            /*
-            else if(view == ibSend) {
-                String replyContent = etReply.getText().toString();
-                if(replyContent.isEmpty()) {
-                    Toast.makeText(context, "Sorry, your reply cannot be empty", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                if(replyContent.length() > MAX_TWEET_LENGTH) {
-                    Toast.makeText(context, "Sorry, your reply is too long", Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                TwitterClient client = TwitterApp.getRestClient(context);
-
-                // Make an API call to Twitter to publish the reply
-                client.publishReply(replyContent, new JsonHttpResponseHandler() {
+            else if(view == ibLikeEmpty) {
+                client.likeTweet(new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Headers headers, JSON json) {
-                        Log.i(TAG, "onSuccess to publish reply");
+                        Log.i("DEBUG", "Liked tweet");
                     }
 
                     @Override
                     public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                        Log.e(TAG, "onFailure to publish reply", throwable);
+                        Log.d("DEBUG", "Like tweet error: " + throwable.toString());
                     }
                 }, tweet.id);
-
-                hideKeyboard(view);
-                setDefaultConditions();
+                ibLikeEmpty.setVisibility(View.GONE);
+                ibLike.setVisibility(View.VISIBLE);
             }
+            else if(view == ibLike) {
+                client.unlikeTweet(new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Headers headers, JSON json) {
+                        Log.i("DEBUG", "Unliked tweet");
+                    }
 
-             */
+                    @Override
+                    public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                        Log.d("DEBUG", "Unlike tweet error: " + throwable.toString());
+                    }
+                }, tweet.id);
+                ibLike.setVisibility(View.GONE);
+                ibLikeEmpty.setVisibility(View.VISIBLE);
+            }
             else {
                 // START NEW ACTIVITY THAT SHOWS DETAILED TWEET
                 // gets item position
@@ -173,13 +181,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
         }
 
-        /*
-        public void hideKeyboard(View view) {
-            InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-
-         */
     }
 
     // Clean all elements of the recycler

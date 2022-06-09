@@ -2,6 +2,8 @@ package com.codepath.apps.restclienttemplate;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,8 +21,6 @@ import org.parceler.Parcels;
 import okhttp3.Headers;
 
 public class TweetDetailsActivity extends AppCompatActivity {
-
-    TwitterClient client = TwitterApp.getRestClient(this);
 
     Tweet tweet;
 
@@ -42,6 +42,9 @@ public class TweetDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tweet_detail);
+
+        Context context = this;
+        TwitterClient client = TwitterApp.getRestClient(this);
 
         // resolve the view objects
         ivProfileImage = findViewById(R.id.ivProfileImage);
@@ -65,7 +68,10 @@ public class TweetDetailsActivity extends AppCompatActivity {
         btnReply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                // start reply activity
+                Intent intent = new Intent(context, ReplyActivity.class);
+                intent.putExtra("original_author", tweet.user.screenName);
+                context.startActivity(intent);
             }
         });
         ibLikeEmpty.setOnClickListener(new View.OnClickListener() {

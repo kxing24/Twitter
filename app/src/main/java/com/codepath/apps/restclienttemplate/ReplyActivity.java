@@ -43,9 +43,10 @@ public class ReplyActivity extends AppCompatActivity {
         btnTweet = findViewById(R.id.btnTweet);
 
         Bundle extras = getIntent().getExtras();
+        originalAuthor = extras.getString("original_author");
 
-        tvOriginalAuthor.setText("Replying to @" + extras.getString("original_author"));
-        etReply.setText("@" + extras.getString("original_author"));
+        tvOriginalAuthor.setText("Replying to @" + originalAuthor);
+        etReply.setText("@" + originalAuthor + " ");
 
         // Set click listener on button
         btnTweet.setOnClickListener(new View.OnClickListener() {
