@@ -3,6 +3,7 @@ package com.codepath.apps.restclienttemplate;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Movie;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,9 +76,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvName;
         TextView tvScreenName;
         TextView tvTimeAgo;
-        EditText etReply;
-        Button btnReply;
-        ImageButton ibSend;
+        ImageButton ibReply;
 
         Tweet tweet;
 
@@ -89,12 +88,9 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvName = itemView.findViewById(R.id.tvName);
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             tvTimeAgo = itemView.findViewById(R.id.tvTimeAgo);
-            etReply = itemView.findViewById(R.id.etReply);
-            btnReply = itemView.findViewById(R.id.btnReply);
-            ibSend = itemView.findViewById(R.id.ibSend);
+            ibReply = itemView.findViewById(R.id.ibReply);
 
-            btnReply.setOnClickListener(this);
-            ibSend.setOnClickListener(this);
+            ibReply.setOnClickListener(this);
             itemView.setOnClickListener(this);
         }
 
@@ -102,8 +98,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             this.tweet = tweet;
 
             int radius = 50;
-
-            setDefaultConditions();
 
             tvBody.setText(tweet.body);
             tvName.setText(tweet.user.name);
@@ -120,11 +114,13 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
         @Override
         public void onClick(View view) {
-            if(view == btnReply) {
-                etReply.setVisibility(View.VISIBLE);
-                ibSend.setVisibility(View.VISIBLE);
-                btnReply.setVisibility(View.GONE);
+            if(view == ibReply) {
+
+                Intent intent = new Intent(context, ReplyActivity.class);
+                intent.putExtra("original_author", tweet.user.screenName);
+                context.startActivity(intent);
             }
+            /*
             else if(view == ibSend) {
                 String replyContent = etReply.getText().toString();
                 if(replyContent.isEmpty()) {
@@ -154,10 +150,9 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 hideKeyboard(view);
                 setDefaultConditions();
             }
-            else {
-                hideKeyboard(view);
-                setDefaultConditions();
 
+             */
+            else {
                 // START NEW ACTIVITY THAT SHOWS DETAILED TWEET
                 // gets item position
                 int position = getAdapterPosition();
@@ -178,18 +173,13 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
         }
 
-        public void setDefaultConditions() {
-            etReply.setText("@" + tweet.user.screenName + " ");
-            etReply.setSelection(etReply.getText().length());
-            etReply.setVisibility(View.GONE);
-            ibSend.setVisibility(View.GONE);
-            btnReply.setVisibility(View.VISIBLE);
-        }
-
+        /*
         public void hideKeyboard(View view) {
             InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+
+         */
     }
 
     // Clean all elements of the recycler

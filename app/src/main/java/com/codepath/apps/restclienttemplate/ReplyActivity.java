@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -23,8 +24,10 @@ public class ReplyActivity extends AppCompatActivity {
     public static final String TAG = "ReplyActivity";
     public static final int MAX_TWEET_LENGTH = 280;
 
+    TextView tvOriginalAuthor;
     EditText etReply;
     Button btnTweet;
+    String originalAuthor;
 
     TwitterClient client;
 
@@ -35,8 +38,14 @@ public class ReplyActivity extends AppCompatActivity {
 
         client = TwitterApp.getRestClient(this);
 
+        tvOriginalAuthor = findViewById(R.id.tvOriginalAuthor);
         etReply = findViewById(R.id.etReply);
         btnTweet = findViewById(R.id.btnTweet);
+
+        Bundle extras = getIntent().getExtras();
+
+        tvOriginalAuthor.setText("Replying to @" + extras.getString("original_author"));
+        etReply.setText("@" + extras.getString("original_author"));
 
         // Set click listener on button
         btnTweet.setOnClickListener(new View.OnClickListener() {

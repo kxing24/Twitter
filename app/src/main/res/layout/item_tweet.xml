@@ -73,30 +73,12 @@
         android:id="@+id/btnReply"
         android:layout_width="70dp"
         android:layout_height="40dp"
-        android:layout_below="@+id/etReply"
+        android:layout_below="@+id/ibReply"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="false"
+        android:layout_marginTop="20dp"
         android:text="Reply"
         android:textSize="10sp" />
-
-    <EditText
-        android:id="@+id/etReply"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ivMedia"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_toEndOf="@+id/ivProfileImage"
-        android:hint="Your reply"
-        android:inputType="textMultiLine" />
-
-    <ImageButton
-        android:id="@+id/ibSend"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignTop="@+id/etReply"
-        android:layout_alignParentEnd="true"
-        app:srcCompat="@android:drawable/ic_menu_send" />
 
     <ImageButton
         android:id="@+id/ibReply"
