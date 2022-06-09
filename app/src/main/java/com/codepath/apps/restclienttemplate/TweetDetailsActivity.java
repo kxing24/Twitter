@@ -113,6 +113,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
                 ibLike.setVisibility(View.VISIBLE);
 
                 tweet.likeCount++;
+                tweet.favorited = true;
                 tvLikeCount.setText(tweet.likeCount + " Likes");
 
             }
@@ -135,6 +136,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
                 ibLikeEmpty.setVisibility(View.VISIBLE);
 
                 tweet.likeCount--;
+                tweet.favorited = false;
                 tvLikeCount.setText(tweet.likeCount + " Likes");
             }
         });
@@ -156,6 +158,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
                 ibRetweet.setVisibility(View.VISIBLE);
 
                 tweet.retweetCount++;
+                tweet.retweeted = true;
                 tvRetweetCount.setText(tweet.retweetCount + " Retweets");
 
             }
@@ -178,6 +181,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
                 ibRetweetEmpty.setVisibility(View.VISIBLE);
 
                 tweet.retweetCount--;
+                tweet.retweeted = false;
                 tvRetweetCount.setText(tweet.retweetCount + " Retweets");
             }
         });

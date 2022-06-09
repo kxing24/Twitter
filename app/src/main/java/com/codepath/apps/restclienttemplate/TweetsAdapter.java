@@ -177,6 +177,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 ibLikeEmpty.setVisibility(View.GONE);
                 ibLike.setVisibility(View.VISIBLE);
                 tweet.likeCount++;
+                tweet.favorited = true;
                 tvLikeCount.setText(Integer.toString(tweet.likeCount));
             }
             else if(view == ibLike) {
@@ -194,6 +195,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 ibLike.setVisibility(View.GONE);
                 ibLikeEmpty.setVisibility(View.VISIBLE);
                 tweet.likeCount--;
+                tweet.favorited = false;
                 tvLikeCount.setText(Integer.toString(tweet.likeCount));
             }
             else if(view == ibRetweetEmpty) {
@@ -211,6 +213,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 ibRetweetEmpty.setVisibility(View.GONE);
                 ibRetweet.setVisibility(View.VISIBLE);
                 tweet.retweetCount++;
+                tweet.retweeted = true;
                 tvRetweetCount.setText(Integer.toString(tweet.retweetCount));
             }
             else if(view == ibRetweet) {
@@ -228,6 +231,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 ibRetweet.setVisibility(View.GONE);
                 ibRetweetEmpty.setVisibility(View.VISIBLE);
                 tweet.retweetCount--;
+                tweet.retweeted = false;
                 tvRetweetCount.setText(Integer.toString(tweet.retweetCount));
             }
             else {
