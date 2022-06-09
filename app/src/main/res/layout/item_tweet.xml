@@ -97,4 +97,16 @@
         android:layout_alignTop="@+id/etReply"
         android:layout_alignParentEnd="true"
         app:srcCompat="@android:drawable/ic_menu_send" />
+
+    <ImageButton
+        android:id="@+id/ibReply"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/ivMedia"
+        android:layout_alignStart="@+id/ivMedia"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/reply" />
+
 </RelativeLayout>
