@@ -32,7 +32,8 @@ import okhttp3.Headers;
 public class TimelineActivity extends AppCompatActivity {
 
     public static final String TAG = "TimelineActivity";
-    private final int REQUEST_CODE = 20;
+    private final int ADD_POSTED_TWEET = 20;
+    private final int UPDATE_TWEET = 10;
 
     private SwipeRefreshLayout swipeContainer;
     private EndlessRecyclerViewScrollListener scrollListener;
@@ -146,7 +147,7 @@ public class TimelineActivity extends AppCompatActivity {
             // Compose icon has been selected
             // Navigate to the compose activity
             Intent intent = new Intent(this, ComposeActivity.class);
-            startActivityForResult(intent, REQUEST_CODE);
+            startActivityForResult(intent, ADD_POSTED_TWEET);
 
             return true;
         }
@@ -159,7 +160,7 @@ public class TimelineActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+        if (requestCode == ADD_POSTED_TWEET && resultCode == RESULT_OK) {
             // Get data from the intent (tweet)
             Tweet tweet = Parcels.unwrap(data.getParcelableExtra("tweet"));
 
@@ -170,6 +171,10 @@ public class TimelineActivity extends AppCompatActivity {
             // Update the adapter
             adapter.notifyItemInserted(0);
             rvTweets.smoothScrollToPosition(0);
+        }
+        if (requestCode == UPDATE_TWEET && resultCode == RESULT_OK) {
+            // Get data from the intent
+
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

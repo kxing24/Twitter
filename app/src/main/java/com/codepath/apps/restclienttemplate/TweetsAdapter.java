@@ -32,7 +32,8 @@ import okhttp3.Headers;
 
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder>{
 
-    private final int REQUEST_CODE = 20;
+    private final int ADD_POSTED_TWEET = 20;
+    private final int UPDATE_TWEET = 10;
 
     public static final String TAG = "TweetsAdapter";
     public static final int MAX_TWEET_LENGTH = 280;
@@ -118,23 +119,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
             int radius = 50;
 
-            if(tweet.favorited) {
-                ibLike.setVisibility(View.VISIBLE);
-                ibLikeEmpty.setVisibility(View.GONE);
-            }
-            else {
-                ibLike.setVisibility(View.GONE);
-                ibLikeEmpty.setVisibility(View.VISIBLE);
-            }
-
-            if(tweet.retweeted) {
-                ibRetweet.setVisibility(View.VISIBLE);
-                ibRetweetEmpty.setVisibility(View.GONE);
-            }
-            else {
-                ibRetweet.setVisibility(View.GONE);
-                ibRetweetEmpty.setVisibility(View.VISIBLE);
-            }
+            setLikedStatus();
+            setRetweetedStatus();
 
             tvBody.setText(tweet.body);
             tvName.setText(tweet.user.name);
@@ -158,7 +144,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 // start reply activity
                 Intent intent = new Intent(context, ReplyActivity.class);
                 intent.putExtra("original_author", tweet.user.screenName);
-                ((TimelineActivity) context).startActivityForResult(intent, REQUEST_CODE);
+                ((TimelineActivity) context).startActivityForResult(intent, ADD_POSTED_TWEET);
 
                 //context.startActivity(intent);
             }
@@ -248,11 +234,34 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     // serialize the movie using parceler, use its short name as a key
                     intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
                     // show the activity
-                    context.startActivity(intent);
+                    //context.startActivity(intent);
+                    ((TimelineActivity) context).startActivityForResult(intent, UPDATE_TWEET);
                 }
 
             }
 
+        }
+
+        public void setLikedStatus() {
+            if(tweet.favorited) {
+                ibLike.setVisibility(View.VISIBLE);
+                ibLikeEmpty.setVisibility(View.GONE);
+            }
+            else {
+                ibLike.setVisibility(View.GONE);
+                ibLikeEmpty.setVisibility(View.VISIBLE);
+            }
+        }
+
+        public void setRetweetedStatus() {
+            if(tweet.retweeted) {
+                ibRetweet.setVisibility(View.VISIBLE);
+                ibRetweetEmpty.setVisibility(View.GONE);
+            }
+            else {
+                ibRetweet.setVisibility(View.GONE);
+                ibRetweetEmpty.setVisibility(View.VISIBLE);
+            }
         }
 
     }
